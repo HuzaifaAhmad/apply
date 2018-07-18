@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Verify User Application</title>
+</head>
+<body>
+    <h1>New Application</h1>
+    <div class="fname">
+        <h3>First Name: </h3>
+        <p>{{ .FirstName }}</p>
+    </div>
+
+    <div class="lname">
+        <h3>Last Name: </h3>
+        <p>{{ .LastName}}</p>
+    </div>
+
+    <div class="email">
+        <h3>Email: </h3>
+        <p>{{ .Email }}</p>
+    </div>
+
+    <div class="age">
+        <h3>Age: </h3>
+        <p>{{ .Age }}</p>
+    </div>
+    
+    <div class="phone">
+        <h3>Phone Number: </h3>
+        <p>{{ .Phone }}</p>
+    </div>
+
+    <div class="location">
+        <h3>Location: </h3>
+        <p>{{ .Location }}</p>
+    </div>
+
+    <div class="course">
+        <h3>Course: </h3>
+        <p>{{ .Course }}</p>
+    </div>
+
+    <div class="ed">
+        <h3>Academic Education: </h3>
+        <p>{{ .Education }}</p>
+    </div>
+
+    <div class="islamic-ed">
+        <h3>Islamic Education: </h3>
+        <p>{{ .IslamicEducation }}</p>
+    </div>
+
+    <div class="expectations">
+        <h3>Expectations: </h3>
+        <p>{{ .Expectations }}</p>
+    </div>
+
+    <div class="hear">
+        <h3>How Did You Hear About Us: </h3>
+        <p>{{ .Hear }}</p>
+    </div>
+
+    <div class="read">
+        <h3>Can You Read Quraan Fluently: </h3>
+        <p>{{ .Read }}</p>
+    </div>
+
+    <div class="verify">
+    <a href="/apply/?token={{ .Token }}"> <button class="verify">Verify User</button></a>
+        <p><b>*NOTE </b>After clicking the button above this user will be added to moodle database and will have access to the moodle website.</p>
+    </div>
+</body>
+</html>

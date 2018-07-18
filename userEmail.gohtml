@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Thank You for Applying to Nakhlah Institute</title>
+</head>
+<body>
+    <div class="heading" style="display: grid; grid-template-columns: 100px 1fr; grid-template-rows: auto grid-template-areas: 'logo text';">
+        <img src="https://www.nakhlahusa.org/img/nakhlahLogo.png" alt="Nakhlah Logo" style="width: 100px; grid-area: logo;">
+        <h1 style="grid-area: text; align-self: end; font-size: 3em; margin: 5px;">Nakhlah Institute</h1>
+    </div>
+    <div class="body">  
+        <h3>أسلم عليكم, {{ .FirstName }}, <br>Thank you for applying for our {{ .Course }} course.</h3>
+        <p>Your application was sent to the adminstration, after reviewing your application you will recieve an email with access codes and further instructions on how to access the course. Please take note of your username and password you entered for the application. This will be required to access the course.</p>
+        <p>If you have any questions or concerns please feel free to contact us at <a href="mailto:nakhlahusa@gmail.com">nakhlahusa@gmail.com</a>.</p>
+    </div>
+</body>
+</html>

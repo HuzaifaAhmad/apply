@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS users (
+	  id SERIAL UNIQUE,
+	  firstName TEXT,
+	  lastName TEXT,
+	  email TEXT PRIMARY KEY,
+	  password TEXT,
+	  phone TEXT,
+	  age TEXT,
+	  location TEXT,
+	  course TEXT,
+	  education TEXT,
+	  islamicEducation TEXT,
+	  expectations TEXT,
+	  hear TEXT,
+	  read TEXT
+	);`
