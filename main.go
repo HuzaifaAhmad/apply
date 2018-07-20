@@ -52,7 +52,6 @@ var db *sql.DB
 func main() {
 	db = connect()
 	r := mux.NewRouter()
-
 	r.HandleFunc("/apply", handleApplication).Methods("POST")
 	r.HandleFunc("/apply/", handleVerification).Queries("token", "{token}")
 
@@ -61,6 +60,7 @@ func main() {
 		log.Fatal("ListenAndServe: ", err)
 	}
 }
+
 
 func handleApplication(w http.ResponseWriter, r *http.Request) {
 	var app Application
@@ -202,7 +202,7 @@ func handleVerification(w http.ResponseWriter, r *http.Request) {
 	if ok := verifyUser(user); ok {
 		fmt.Fprint(w, "User Verified")
 	} else {
-		fmt.Fprint(w, "User not verified")
+		fmt.Fprintln(w, "User not verified")
 	}
 }
 
