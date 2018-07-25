@@ -12,5 +12,9 @@ CREATE TABLE IF NOT EXISTS users (
 	  islamicEducation TEXT,
 	  expectations TEXT,
 	  hear TEXT,
-	  read TEXT
+	  read TEXT,
+	  datecreated TIMESTAMP WITHOUT TIMEZONE,
+	  token TEXT,
+	  verified BOOLEAN,
+	  username TEXT
 	);`

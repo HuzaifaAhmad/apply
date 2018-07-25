@@ -4,6 +4,7 @@ import (
 	"crypto/sha1"
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -45,6 +46,8 @@ type User struct {
 	Email     string
 	Username  string
 	Password  string
+	Course    string
+	Verified  bool
 }
 
 var db *sql.DB
@@ -61,6 +64,10 @@ func main() {
 	}
 }
 
+<<<<<<< 98af89bae8f6efd8927e40a8c54ad1a139dcfc6e
+=======
+var errInvlidCourse = errors.New("Invalid Course")
+>>>>>>> added course enrolement feature
 
 func handleApplication(w http.ResponseWriter, r *http.Request) {
 	var app Application
@@ -83,8 +90,12 @@ func handleApplication(w http.ResponseWriter, r *http.Request) {
 	}
 
 	app.Token, err = addTempUser(app)
-	if err != nil {
+	if err == errInvlidCourse {
+		w.Write([]byte("Invalid Course"))
+		return
+	} else if err != nil {
 		w.Write([]byte("Failed to add user to database"))
+		return
 	}
 
 	htmlContent, err := ParseTemplate(filepath.Join("./adminEmail.gohtml"), app)
@@ -133,7 +144,6 @@ func checkIfUserExist(app Application) int {
 	sqlSmnt := `SELECT id FROM tempUsers WHERE email=$1`
 	_ = db.QueryRow(sqlSmnt, app.Email).Scan(&id)
 	if id > 0 {
-		fmt.Println("got here")
 		return 100
 	}
 
@@ -158,6 +168,18 @@ func addTempUser(app Application) (string, error) {
 	if err != nil {
 		log.Println(err)
 		return "", err
+	}
+
+	//Checking if course is valid
+	courses := []string{"Arabic Forensics 1", "Arabic Forensics 2", "Arabic Forensics 3", "Al Mutūn Study Group", "Tafsir (Urdu)", "Crash Course Islamic Studies for Youth (sisters only)"}
+	var ok = false
+	for _, item := range courses {
+		if item == app.Course {
+			ok = true
+		}
+	}
+	if !ok {
+		return "", errInvlidCourse
 	}
 
 	//Add user to database
@@ -189,12 +211,19 @@ func encryptPass(pass string) (string, error) {
 	return hash, nil
 }
 
+//-----------------------------------------------------------------------------------------------------------------------
+//to Verify users
+var errUserVerified = errors.New("User already verified")
+
 func handleVerification(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	token := vars["token"]
 	user, err := getUserByToken(token)
 	if err == sql.ErrNoRows {
 		fmt.Fprint(w, "No User Found")
+		return
+	} else if err == errUserVerified {
+		fmt.Fprint(w, errUserVerified)
 		return
 	} else if err != nil {
 		log.Fatal(err)
@@ -208,17 +237,14 @@ func handleVerification(w http.ResponseWriter, r *http.Request) {
 
 func getUserByToken(token string) (User, error) {
 	var usr User
-	sqlSmnt := `SELECT id, firstName, lastName, email, username, password FROM tempUsers WHERE token = $1`
-	err := db.QueryRow(sqlSmnt, token).Scan(&usr.ID, &usr.FirstName, &usr.LastName, &usr.Email, &usr.Username, &usr.Password)
-	switch {
-	case err == sql.ErrNoRows:
+	sqlSmnt := `SELECT id, firstName, lastName, email, username, password, course, verified FROM tempUsers WHERE token = $1`
+	err := db.QueryRow(sqlSmnt, token).Scan(&usr.ID, &usr.FirstName, &usr.LastName, &usr.Email, &usr.Username, &usr.Password, &usr.Course, &usr.Verified)
+	if err != nil {
 		return User{}, err
-	case err != nil:
-		return User{}, err
-	default:
-		return usr, nil
+	} else if usr.Verified == true {
+		return User{}, errUserVerified
 	}
-
+	return usr, nil
 }
 
 func verifyUser(usr User) bool {
@@ -231,9 +257,19 @@ func verifyUser(usr User) bool {
 		return false
 	}
 
-	sqlSmnt = `INSERT INTO users (firstName, lastName, email, username, password) VALUES($1, $2, $3, $4, $5)`
-	_, err = db.Exec(sqlSmnt, usr.FirstName, usr.LastName, usr.Email, usr.Username, usr.Password)
+	//insert user in user table for moodle authentication
+	sqlSmnt = `INSERT INTO users (id, firstName, lastName, email, username, password) VALUES($1, $2, $3, $4, $5, $6)`
+	_, err = db.Exec(sqlSmnt, usr.ID, usr.FirstName, usr.LastName, usr.Email, usr.Username, usr.Password)
 	if err != nil {
+		log.Fatal(err)
+		return false
+	}
+
+	//insert user in course table for moodle enrolment
+	sqlSmnt = `INSERT INTO course (userid, coursename) VALUES($1, $2)`
+	_, err = db.Exec(sqlSmnt, usr.ID, usr.Course)
+	if err != nil {
+		log.Fatal(err)
 		return false
 	}
 	return true
