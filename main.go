@@ -64,10 +64,7 @@ func main() {
 	}
 }
 
-<<<<<<< 98af89bae8f6efd8927e40a8c54ad1a139dcfc6e
-=======
 var errInvlidCourse = errors.New("Invalid Course")
->>>>>>> added course enrolement feature
 
 func handleApplication(w http.ResponseWriter, r *http.Request) {
 	var app Application
