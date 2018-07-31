@@ -95,6 +95,7 @@ func handleApplication(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//send admin email
 	htmlContent, err := ParseTemplate(filepath.Join("./adminEmail.gohtml"), app)
 	if err != nil {
 		log.Fatalln(err)
@@ -113,7 +114,7 @@ func handleApplication(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	//send user emial
+	//send user email
 	userEmail, err := ParseTemplate(filepath.Join("./userEmail.gohtml"), app)
 	if err != nil {
 		log.Fatalln(err)
@@ -213,9 +214,17 @@ func encryptPass(pass string) (string, error) {
 var errUserVerified = errors.New("User already verified")
 
 func handleVerification(w http.ResponseWriter, r *http.Request) {
+
 	vars := mux.Vars(r)
 	token := vars["token"]
 	user, err := getUserByToken(token)
+
+	//Parsing email template
+	userEmail, err := ParseTemplate(filepath.Join("./userVerifiedEmail.gohtml"), user)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	if err == sql.ErrNoRows {
 		fmt.Fprint(w, "No User Found")
 		return
@@ -226,7 +235,23 @@ func handleVerification(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	if ok := verifyUser(user); ok {
+
+		//Email user that they have been verfified
+		userReq := NewMailRequest(
+			"Nakhlah Institue Administration <apply@nakhlahusa.org>",
+			"Nakhlah Institute Application Verified",
+			userEmail,
+			[]string{user.Email},
+		)
+
+		// send mail
+		ok, err = userReq.SendMail()
+		if !ok {
+			log.Fatal(err)
+		}
+
 		fmt.Fprint(w, "User Verified")
+
 	} else {
 		fmt.Fprintln(w, "User not verified")
 	}
