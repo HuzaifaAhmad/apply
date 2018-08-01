@@ -67,10 +67,6 @@ func main() {
 var errInvlidCourse = errors.New("Invalid Course")
 
 func handleApplication(w http.ResponseWriter, r *http.Request) {
-	//body, err := ioutil.ReadAll(r.Body)
-	//if err != nil {
-	//	panic(err)
-	//}
 	var app Application
 	dec := json.NewDecoder(r.Body)
 	err := dec.Decode(&app)
@@ -222,12 +218,6 @@ func handleVerification(w http.ResponseWriter, r *http.Request) {
 	token := vars["token"]
 	user, err := getUserByToken(token)
 
-	//Parsing email template
-	userEmail, err := ParseTemplate(filepath.Join("./userVerifiedEmail.gohtml"), user)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
 	if err == sql.ErrNoRows {
 		fmt.Fprint(w, "No User Found")
 		return
@@ -236,6 +226,11 @@ func handleVerification(w http.ResponseWriter, r *http.Request) {
 		return
 	} else if err != nil {
 		log.Fatal(err)
+	}
+	//Parsing email template
+	userEmail, err := ParseTemplate(filepath.Join("./userVerifiedEmail.gohtml"), user)
+	if err != nil {
+		log.Fatalln(err)
 	}
 	if ok := verifyUser(user); ok {
 
