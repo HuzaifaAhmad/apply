@@ -30,7 +30,7 @@ type Application struct {
 	Location         string `json:"location"`
 	Course           string `json:"course"`
 	Education        string `json:"ed"`
-	IslamicEducation string `json:"islamic-ed"`
+	IslamicEducation string `json:"islamicEdu"`
 	Expectations     string `json:"expectations"`
 	Hear             string `json:"hear"`
 	Read             string `json:"read"`
@@ -75,7 +75,6 @@ func handleApplication(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Failed to parse JSON"))
 		return
 	}
-
 	//check if User exist
 	exist := checkIfUserExist(app)
 	if exist == 100 {
