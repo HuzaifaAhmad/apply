@@ -108,7 +108,7 @@ func handleApplication(w http.ResponseWriter, r *http.Request) {
 		app.FirstName+" "+app.LastName+" <apply@nakhlahusa.org>",
 		"New Application - "+app.FirstName,
 		htmlContent,
-		[]string{"huzi8014@gmail.com"},
+		[]string{"nakhlahusa@gmail.com"},
 	)
 
 	// send mail
@@ -124,8 +124,8 @@ func handleApplication(w http.ResponseWriter, r *http.Request) {
 	}
 
 	userReq := NewMailRequest(
-		app.FirstName+" "+app.LastName+" <apply@nakhlahusa.org>",
-		"New Application - "+app.FirstName,
+		"Nakhlah Institute Administration <apply@nakhlahusa.org>",
+		"We have recieved your application",
 		userEmail,
 		[]string{app.Email},
 	)
@@ -172,7 +172,7 @@ func addTempUser(app Application) (string, error) {
 	}
 
 	//Checking if course is valid
-	courses := []string{"Arabic Forensics 1", "Arabic Forensics 2", "Arabic Forensics 3", "Al Mutūn Study Group", "Tafsir (Urdu)", "Crash Course Islamic Studies for Youth (sisters only)"}
+	courses := []string{"Arabic Forensics 1", "Arabic Forensics 2", "Arabic Forensics 3", "Al Mutūn Study Group", "Tafsir (Urdu)", "Tafsir in English"}
 	var ok = false
 	for _, item := range courses {
 		if item == app.Course {
@@ -242,7 +242,7 @@ func handleVerification(w http.ResponseWriter, r *http.Request) {
 		//Email user that they have been verfified
 		userReq := NewMailRequest(
 			"Nakhlah Institue Administration <apply@nakhlahusa.org>",
-			"Nakhlah Institute Application Verified",
+			"Welcome to Nakhlah Institute",
 			userEmail,
 			[]string{user.Email},
 		)
