@@ -70,8 +70,6 @@ func handleApplication(w http.ResponseWriter, r *http.Request) {
 	var app Application
 	dec := json.NewDecoder(r.Body)
 	err := dec.Decode(&app)
-	fmt.Println(app)
-	return
 	if err != nil {
 		log.Fatal(err)
 		w.Write([]byte("Failed to parse JSON"))
