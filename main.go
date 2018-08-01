@@ -56,8 +56,8 @@ var db *sql.DB
 func main() {
 	db = connect()
 	r := mux.NewRouter()
-	r.HandleFunc("/apply", handleApplication).Methods("POST")
-	r.HandleFunc("/apply/", handleVerification).Queries("token", "{token}")
+	r.HandleFunc("/apply/go", handleApplication).Methods("POST")
+	r.HandleFunc("/apply/go/", handleVerification).Queries("token", "{token}")
 
 	err := http.ListenAndServe(":8080", r) // set listen port
 	if err != nil {
