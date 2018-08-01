@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"path/filepath"
@@ -68,15 +67,13 @@ func main() {
 var errInvlidCourse = errors.New("Invalid Course")
 
 func handleApplication(w http.ResponseWriter, r *http.Request) {
-	body, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(string(body))
-	return
+	//body, err := ioutil.ReadAll(r.Body)
+	//if err != nil {
+	//	panic(err)
+	//}
 	var app Application
 	dec := json.NewDecoder(r.Body)
-	err = dec.Decode(&app)
+	err := dec.Decode(&app)
 	if err != nil {
 		log.Fatal(err)
 		w.Write([]byte("Failed to parse JSON"))
