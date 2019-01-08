@@ -9,6 +9,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 
 	"github.com/gorilla/mux"
@@ -51,6 +52,9 @@ type User struct {
 }
 
 var db *sql.DB
+
+var goPath = os.Getenv("GOPATH")
+var cwd = goPath + "/src/github.com/HuzaifaAhmad/apply"
 
 func main() {
 	db = connect()
@@ -95,7 +99,7 @@ func handleApplication(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//send admin email
-	htmlContent, err := ParseTemplate(filepath.Join("./adminEmail.gohtml"), app)
+	htmlContent, err := ParseTemplate(filepath.Join(cwd+"/adminEmail.gohtml"), app)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -104,7 +108,7 @@ func handleApplication(w http.ResponseWriter, r *http.Request) {
 		app.FirstName+" "+app.LastName+" <apply@nakhlahusa.org>",
 		"New Application - "+app.FirstName,
 		htmlContent,
-		[]string{"nakhlahusa@gmail.com"},
+		[]string{"huzaifaa.2002@gmail.com"},
 	)
 
 	// send mail
@@ -114,7 +118,7 @@ func handleApplication(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//send user email
-	userEmail, err := ParseTemplate(filepath.Join("./userEmail.gohtml"), app)
+	userEmail, err := ParseTemplate(filepath.Join(cwd+"/userEmail.gohtml"), app)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -228,7 +232,7 @@ func handleVerification(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	//Parsing email template
-	userEmail, err := ParseTemplate(filepath.Join("./userVerifiedEmail.gohtml"), user)
+	userEmail, err := ParseTemplate(filepath.Join(cwd+"/userVerifiedEmail.gohtml"), user)
 	if err != nil {
 		log.Fatalln(err)
 	}
