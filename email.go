@@ -1,10 +1,8 @@
 package main
 
 import (
-	"log"
 	"os"
 
-	"github.com/joho/godotenv"
 	mailgun "github.com/mailgun/mailgun-go"
 )
 
@@ -25,10 +23,6 @@ type MailRequest struct {
 var config mailgunConfig
 
 func init() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
 	config.domain = os.Getenv("MAIL_DOMAIN")
 	config.apiKey = os.Getenv("MAIL_API")
 	config.publicKey = os.Getenv("MAIL_PUBLIC")
