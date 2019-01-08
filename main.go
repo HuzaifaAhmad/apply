@@ -9,7 +9,6 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"os"
 	"path/filepath"
 
 	"github.com/gorilla/mux"
@@ -53,8 +52,7 @@ type User struct {
 
 var db *sql.DB
 
-var goPath = os.Getenv("GOPATH")
-var cwd = goPath + "/src/github.com/HuzaifaAhmad/apply"
+var cwd = "/home/huzaifa/go/src/github.com/HuzaifaAhmad/apply"
 
 func main() {
 	db = connect()
