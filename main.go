@@ -106,7 +106,7 @@ func handleApplication(w http.ResponseWriter, r *http.Request) {
 		app.FirstName+" "+app.LastName+" <apply@nakhlahusa.org>",
 		"New Application - "+app.FirstName,
 		htmlContent,
-		[]string{"huzaifaa.2002@gmail.com"},
+		[]string{"nakhlahusa@gmail.com"},
 	)
 
 	// send mail
