@@ -170,7 +170,7 @@ func addTempUser(app Application) (string, error) {
 	}
 
 	//Checking if course is valid
-	courses := []string{"Arabic Forensics 1", "Arabic Forensics 2", "Arabic Forensics 3", "Al Mutūn Study Group", "Tafsir (Urdu)", "Tafsir in English"}
+	courses := []string{"Arabic Forensics 1", "Arabic Forensics 2", "Arabic Forensics 3", "Al Mutūn Study Group", "Tafsir (Urdu)", "Tafsir in English, The Forty Ahadith of Imam Al-Nawawi"}
 	var ok = false
 	for _, item := range courses {
 		if item == app.Course {
